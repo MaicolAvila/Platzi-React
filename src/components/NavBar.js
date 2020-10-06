@@ -1,16 +1,19 @@
 import React from "react"
 
-import logo from "../images/badge-header.svg"
+import "./styles/NavBar.css"
+import logo from "../images/logo.svg"
 
 class NavBar extends React.Component{
     render() {
         return(
-            <div>
-                <a>
-                    <img src={logo} alt=""/>
-                    <span>Platzi</span>
-                    <span>Conf</span>
-                </a>
+            <div className="Navbar">
+                <div className="container-fluid">
+                    <a className="Navbar__brand" href="/" >
+                        <img src={logo} alt="" className="Navbar__brand-logo" />
+                        <span className="font-weight-light" >Platzi</span>
+                        <span className="font-weight-bold" >Conf</span>
+                    </a>
+                </div>
             </div>
         )
     }
