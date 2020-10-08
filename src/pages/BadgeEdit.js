@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import { read } from "react-router-dom";
 import "./styles/BadgeNew.css"
 import header from "../images/platziconf-logo.svg"
 
@@ -7,9 +8,9 @@ import Badge from "../components/Badge"
 import BadgeForm from "../components/BadgeForm"
 import PageLoading from "../components/PageLoading";
 
-class BadgeNew extends React.Component{
+class BadgeEdit extends React.Component{
     state = {
-        loading: false,
+        loading: true,
         error: null,
         form: {
         firstName: '',
@@ -19,10 +20,23 @@ class BadgeNew extends React.Component{
         twitter: ''
     }};
 
-    handleChange = e => {
-        //const nextForm = this.state.form
-        //nextForm[e.target.name] = e.target.value;
+    componentDidMount(){
+        this.fetchData()
+    }
 
+    fetchData = async e => {
+        this.setState({ loading: true, error: null })
+
+        try{
+            const data = await api.badges.read(this.props.match.params.badgeId)
+
+            this.setState({loading: false, form: data});
+        }catch(error){
+            this.setState({loading: false, error: error});
+        }
+    }
+
+    handleChange = e => {
         this.setState({
             form: {
                 ... this.state.form,
@@ -36,8 +50,10 @@ class BadgeNew extends React.Component{
         this.setState({ loading: true, error: null})
 
         try{
-            await api.badges.create(this.state.form)
+            await api.badges.update(this.props.match.params.badgeId, this.state.form)
             this.setState({loading: false})
+
+            this.props.history.push('/badges')
         } catch(error){
             this.setState({loading: false, error: error})
         }
@@ -81,4 +97,4 @@ class BadgeNew extends React.Component{
     }
 }
 
-export default BadgeNew;
+export default BadgeEdit;
